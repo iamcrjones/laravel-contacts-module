@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace Modules\Contacts\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Modules\Contacts\Actions\CallContactAction;
