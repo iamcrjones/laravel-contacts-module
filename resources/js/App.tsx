@@ -2,6 +2,7 @@ import "./bootstrap";
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import Contacts from "./pages/Contacts/Contacts";
 
 const App: React.FC = () => {
     return (
@@ -18,14 +19,6 @@ const App: React.FC = () => {
                         <ul className="flex space-x-4">
                             <li>
                                 <Link
-                                    to="/"
-                                    className="text-gray-700 hover:text-blue-600"
-                                >
-                                    Home
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
                                     to="/contacts"
                                     className="text-gray-700 hover:text-blue-600"
                                 >
@@ -38,8 +31,7 @@ const App: React.FC = () => {
 
                 <main className="flex-grow container mx-auto p-4">
                     <Routes>
-                        {/* TODO: Add Clients Page */}
-                        {/* <Route path="/" element={<Clients />} /> */}
+                        <Route path="/contacts" element={<Contacts />} />
 
                         {/* TODO: Add Not Found Page */}
                         {/* <Route path="*" element={<NotFoundPage />} /> */}
