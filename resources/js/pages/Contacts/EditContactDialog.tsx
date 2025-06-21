@@ -22,17 +22,16 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form";
-import { Contact, ContactCreateUpdatePayload } from "@/lib/types"; // Assuming types
+import { Contact } from "@/lib/types";
 import { updateContact } from "@/lib/api";
 
 interface EditContactDialogProps {
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
-    contact: Contact | null; // The contact to be edited
-    onContactUpdated: () => void; // Callback after successful update
+    contact: Contact | null;
+    onContactUpdated: () => void;
 }
 
-// Zod schema for form validation
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required." }).max(255),
     phone_number: z
@@ -58,7 +57,7 @@ const EditContactDialog: React.FC<EditContactDialogProps> = ({
     contact,
     onContactUpdated,
 }) => {
-    const form = useForm<ContactCreateUpdatePayload>({
+    const form = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: "",
@@ -67,7 +66,6 @@ const EditContactDialog: React.FC<EditContactDialogProps> = ({
         },
     });
 
-    // Populate form fields when the dialog opens or contact changes
     useEffect(() => {
         if (isOpen && contact) {
             form.reset({
@@ -79,16 +77,15 @@ const EditContactDialog: React.FC<EditContactDialogProps> = ({
     }, [isOpen, contact, form]);
 
     const onSubmit = async (values: ContactCreateUpdatePayload) => {
-        if (!contact?.id) return; // Should not happen if contact is valid
+        if (!contact?.id) return;
 
         try {
             await updateContact(contact.id, values);
-            onContactUpdated(); // Notify parent of update
-            onOpenChange(false); // Close dialog
-            form.reset(); // Reset form after successful submission
+            onContactUpdated();
+            onOpenChange(false);
+            form.reset();
         } catch (error: any) {
             console.error("Failed to update contact:", error.message);
-            // You might want to display an error message to the user
             form.setError("root.serverError", {
                 type: "manual",
                 message: error.message || "An unexpected error occurred.",
