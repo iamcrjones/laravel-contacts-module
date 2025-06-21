@@ -7,10 +7,12 @@ use Modules\Contacts\Models\Contact;
 
 class UpdateContactAction
 {
-    public function __invoke(ContactDto $dto): Contact
+    public function __invoke(Contact $contact, ContactDto $dto): Contact // <--- Accept Contact model here
     {
-        $contact = Contact::where('email', $dto->email);
+        $contact->update($dto->toArray());
 
-        return $contact->update($dto->toArray());
+        $contact->refresh();
+
+        return $contact;
     }
 }

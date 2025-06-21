@@ -14,6 +14,13 @@ use Modules\Contacts\Models\Contact;
 
 class ContactsController extends Controller
 {
+    public function __construct(
+        protected CreateContactAction $createContactAction,
+        protected UpdateContactAction $updateContactAction,
+        protected DeleteContactAction $deleteContactAction,
+        protected CallContactAction $callContactAction,
+    ) {}
+
     public function index()
     {
         $contacts = Contact::all();
@@ -24,7 +31,7 @@ class ContactsController extends Controller
     public function store(ContactUpsertRequest $request)
     {
         $dto = ContactDto::fromArray($request->validated());
-        $contact = new CreateContactAction($dto);
+        $contact = ($this->createContactAction)($dto);
 
         return new ContactResource($contact);
     }
@@ -37,21 +44,21 @@ class ContactsController extends Controller
     public function update(ContactUpsertRequest $request, Contact $contact)
     {
         $dto = ContactDto::fromArray($request->validated());
-        $contact = new UpdateContactAction($dto);
+        $contact = ($this->updateContactAction)($contact, $dto);
 
         return new ContactResource($contact);
     }
 
     public function destroy(Contact $contact)
     {
-        new DeleteContactAction($contact);
+        ($this->deleteContactAction)($contact);
 
         return response()->noContent();
     }
 
     public function call(Contact $contact)
     {
-        $result = new CallContactAction($contact);
+        $result = ($this->callContactAction)($contact);
 
         return response()->json(['message' => 'Call simulated', 'status' => $result]);
     }

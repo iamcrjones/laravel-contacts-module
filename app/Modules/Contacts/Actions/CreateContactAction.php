@@ -9,6 +9,8 @@ class CreateContactAction
 {
     public function __invoke(ContactDto $dto): Contact
     {
-        return Contact::create($dto->toArray());
+        $contact = Contact::create($dto->toArray());
+
+        return $contact;
     }
 }

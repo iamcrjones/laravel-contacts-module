@@ -16,7 +16,6 @@ class ContactUpsertRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            /* TODO: Add Phone number validation */
             'phone_number' => ['required', 'string'],
             'email' => ['required', 'string', 'email', 'max:255'],
         ];
