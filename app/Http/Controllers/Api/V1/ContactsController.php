@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Modules\Contacts\Actions\CallContactAction;
 use Modules\Contacts\Actions\CreateContactAction;
 use Modules\Contacts\Actions\DeleteContactAction;
 use Modules\Contacts\Actions\UpdateContactAction;
@@ -46,5 +47,12 @@ class ContactsController extends Controller
         new DeleteContactAction($contact);
 
         return response()->noContent();
+    }
+
+    public function call(Contact $contact)
+    {
+        $result = new CallContactAction($contact);
+
+        return response()->json(['message' => 'Call simulated', 'status' => $result]);
     }
 }
